@@ -1,4 +1,4 @@
-getLineData('lines.txt');
+getLineData('lines2.txt');
 
 //reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
 // also here https://www.html5rocks.com/en/tutorials/file/dndfiles/
@@ -26,7 +26,8 @@ function handleText(allText) {
         this.name = name;
     };
     var nodes = [];
-    
+    var data = [];
+
     //break text up line by line
     var lines = allText.split('\n');
 
@@ -55,88 +56,133 @@ function handleText(allText) {
             nodes.push(newNode);
         }
     }
-    
-    constructTree(nodes);
+
+    //loop through every person's line
+    for (var lineIndex in lines) {
+
+        //isolate each id number
+        var line = lines[lineIndex].split(' ');
+
+        //if line length is less than 2 skip it
+        if (line.length < 2)
+            continue;
+
+        function Node(id = 0) {
+            this.id = id;
+        };
+
+        //for every id in the line
+        for (var i = 0; i < line.length; i++) {
+            var id = '';
+
+            //prepend all the children
+            for (var j = 0; j <= i; j++) {
+
+                //add . between each node
+                if (j !== 0)
+                    id += '.';
+
+                id += line[j];
+            }
+            data.push(new Node(id));
+        }
+    }
+    print(data);
+    constructTree(data);
 }
 
-function constructTree(nodes) {
-    var nodeLinks = [];
-    var mappedNodes = [];
-    
-//    nodeLinks.push({
-//        source: 0,
-//        target: 0
-//    })
-//    mappedNodes.push([0].map(Object));
-//    print(mappedNodes);
+function constructTree(data) {
+    var svg = d3.select("svg"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height"),
+        g = svg.append("g").attr("transform", "translate(" + (width / 2 - 15) + "," + (height / 2 + 25) + ")");
 
-    //loop through all of the nodes
-    for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
-        
-        nodeLinks.push({
-            source: node.id,
-            target: node.parent
+    var stratify = d3.stratify()
+        .parentId(function (d) {
+            return d.id.substring(0, d.id.lastIndexOf("."));
         });
 
-        //map the nodes value for the graph
-        mappedNodes.push(node.id);
-    }
-    
-    //example at https://bl.ocks.org/mbostock/3311124
-    var graph = {
-        nodes: d3.range(600).map(Object),
-        links: nodeLinks
+    var tree = d3.cluster()
+        .size([360, 390])
+        .separation(function (a, b) {
+            return (a.parent == b.parent ? 1 : 2) / a.depth;
+        });
+
+    var root = tree(stratify(data)
+        .sort(function (a, b) {
+            return (a.height - b.height) || a.id.localeCompare(b.id);
+        }));
+
+    var link = g.selectAll(".link")
+        .data(root.descendants().slice(1))
+        .enter().append("path")
+        .attr("class", "link")
+        .attr("d", function (d) {
+            return "M" + project(d.x, d.y) +
+                "C" + project(d.x, (d.y + d.parent.y) / 2) +
+                " " + project(d.parent.x, (d.y + d.parent.y) / 2) +
+                " " + project(d.parent.x, d.parent.y);
+        });
+
+    var node = g.selectAll(".node")
+        .data(root.descendants())
+        .enter().append("g")
+        .attr("class", function (d) {
+            return "node" + (d.children ? " node--internal" : " node--leaf");
+        })
+        .attr("transform", function (d) {
+            return "translate(" + project(d.x, d.y) + ")";
+        });
+
+    node.append("circle")
+        .attr("r", 2.5);
+
+    node.append("text")
+        .attr("dy", ".31em")
+        .attr("x", function (d) {
+            return d.x < 180 === !d.children ? 6 : -6;
+        })
+        .style("text-anchor", function (d) {
+            return d.x < 180 === !d.children ? "start" : "end";
+        })
+        .attr("transform", function (d) {
+            return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")";
+        })
+        .text(function (d) {
+            return d.id.substring(d.id.lastIndexOf(".") + 1);
+        });
+}
+
+function lineGenerator(line) {
+    var data = [];
+
+    function Node(id = 0) {
+        this.id = id;
     };
-    
-    var width = 960,
-        height = 500;
 
-    var svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    //for every id in the line
+    for (var i = 0; i < line.length; i++) {
+        var id = '';
 
-    var force = d3.layout.force()
-        .nodes(graph.nodes)
-        .links(graph.links)
-        .size([width, height])
-        .charge(-12)
-        .on("tick", tick)
-        .start();
+        //prepend all the children
+        for (var j = 0; j <= i; j++) {
 
-    var link = svg.selectAll(".link")
-        .data(graph.links)
-        .enter().append("line")
-        .attr("class", "link");
+            //add . between each node
+            if (j !== 0)
+                id += '.';
 
-    var node = svg.selectAll(".node")
-        .data(graph.nodes)
-        .enter().append("circle")
-        .attr("class", "node")
-        .attr("r", 4.5);
-
-    function tick() {
-        link.attr("x1", function (d) {
-                return d.source.x;
-            })
-            .attr("y1", function (d) {
-                return d.source.y;
-            })
-            .attr("x2", function (d) {
-                return d.target.x;
-            })
-            .attr("y2", function (d) {
-                return d.target.y;
-            });
-
-        node.attr("cx", function (d) {
-                return d.x;
-            })
-            .attr("cy", function (d) {
-                return d.y;
-            });
+            id += line[j];
+        }
+        data.push(new Node(id));
     }
 
+    return data;
+}
+
+function project(x, y) {
+    var angle = (x - 90) / 180 * Math.PI,
+        radius = y;
+    return [radius * Math.cos(angle), radius * Math.sin(angle)];
 }
 
 function print(stuff) {
