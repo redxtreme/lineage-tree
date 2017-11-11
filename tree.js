@@ -98,6 +98,12 @@ function constructGraphFormat() {
         //print(graphData);
     }
     
+    //turn object into array
+    var toReturn = [];
+    for (var graphNodeKey in graphData) {
+        toReturn.push(graphData[graphNodeKey]);
+    }
+    
 //    for (i = keys.length - 1; i >= 0; i--) {
 //        var curKey = keys[i];
 //        var node = nodeDetails[curKey];
@@ -120,8 +126,8 @@ function constructGraphFormat() {
     ////        graphData.push(newNode);
     //    }
 
-    print(graphData);
-    return graphData;
+    print(toReturn);
+    return toReturn;
 }
 
 function constructTree(data) {
