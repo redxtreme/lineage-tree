@@ -62,14 +62,14 @@ function constructNodeDetails(splitLines) {
     })
 }
 
-function printLineage(node) {
+function formatLineage(node) {
     
     if (node.parent === 0) {
         var newNode = new GraphNode('0.' + node.id);
         return [newNode];
     }
     else {
-        lineageData = printLineage(nodeDetails[node.parent]);
+        lineageData = formatLineage(nodeDetails[node.parent]);
         var lineage = lineageData[lineageData.length-1].id;
         var formattedLineage = lineage + '.' + node.id;
         var newNode = new GraphNode(formattedLineage);
@@ -80,24 +80,24 @@ function printLineage(node) {
 
 //formats the lineage so the graph can display it
 function constructGraphFormat() {
-    var graphData = [];
+    var graphData = {};
     var keys = d3.keys(nodeDetails);
-    var node = nodeDetails[keys[keys.length-1]];
     
-    
-    graphData = printLineage(node);
+//    graphData = printLineage(node);
     
     //add the root node
-    graphData.push(new GraphNode('0'));
+    graphData['0'] = new GraphNode('0');
     
-    print(graphData);
-
-//    for (i = keys.length - 1; i >= 0; i--) {
-//        var curKey = keys[i];
-//        var node = nodeDetails[curKey];
-//        //printLineage(node);
-//        print(node);
-//    }
+    for (i = keys.length - 1; i >= 0; i--) {
+        var curKey = keys[i];
+        var node = nodeDetails[curKey];
+        formatLineage(node).forEach(function(data) {
+            if (!graphData.hasOwnProperty(data.id))
+                graphData[data.id] = data;
+        });
+        //print(graphData);
+    }
+    
 //    for (i = keys.length - 1; i >= 0; i--) {
 //        var curKey = keys[i];
 //        var node = nodeDetails[curKey];
