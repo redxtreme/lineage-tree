@@ -1,3 +1,5 @@
+var nodeDetails = []; //holds the details for each individual node
+
 getLineData('lines2.txt');
 
 //reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
@@ -20,41 +22,35 @@ function getLineData(file) {
 
 //imports and formats the text file
 function handleText(allText) {
-    function Node(parent = 0, id = null, name = null) {
-        this.parent = parent;
-        this.id = id;
-        this.name = name;
-    };
-    var nodes = [];
+    
     var data = [];
 
-    //break text up line by line
+    //split text up line by line
     var lines = allText.split('\n');
 
-    //loop through every person's line
-    for (var lineIndex in lines) {
-
-        //isolate each id number
-        var line = lines[lineIndex].split(' ');
-
+    //split each line array up into individual ids
+    lines.map(function(line) { return line.split(' '); });
+    
+    //loop through every line and link the lineages
+    lines.forEach(function (line, i) {
+        
         //if line length is less than 2 skip it
         if (line.length < 2)
             continue;
-
-        //loop through every id in a line
-        for (var i = 0; i < line.length; i++) {
-            var newNode = new Node();
-
+        
+        //loop through every id in the line and link
+        line.forEach(function (id, i) {
+            var newNode = new DetailedNode();
+            
             newNode.id = parseInt(line[i]);
 
             //if this is not the last node in a line
-            if (i < line.length - 1) {
+            if (i < line.length - 1)
                 newNode.parent = parseInt(line[i + 1]);
-            }
 
-            nodes.push(newNode);
-        }
-    }
+            nodeDetails.push(newNode);
+        })
+    })
 
     //loop through every person's line
     for (var lineIndex in lines) {
@@ -65,16 +61,12 @@ function handleText(allText) {
         //if line length is less than 2 skip it
         if (line.length < 2)
             continue;
-
-        function Node(id = 0) {
-            this.id = id;
-        };
 
         //for every id in the line
         for (var i = 0; i < line.length; i++) {
             var id = '';
 
-            //prepend all the children
+            //append all the children
             for (var j = 0; j <= i; j++) {
 
                 //add . between each node
@@ -83,7 +75,7 @@ function handleText(allText) {
 
                 id += line[j];
             }
-            data.push(new Node(id));
+            data.push(new graphNode(id));
         }
     }
     print(data);
@@ -183,6 +175,16 @@ function project(x, y) {
         radius = y;
     return [radius * Math.cos(angle), radius * Math.sin(angle)];
 }
+
+function DetailedNode(parent = 0, id = null, name = null) {
+        this.parent = parent;
+        this.id = id;
+        this.name = name;
+    };
+
+function graphNode(id = 0) {
+            this.id = id;
+        };
 
 function print(stuff) {
     console.log(stuff);

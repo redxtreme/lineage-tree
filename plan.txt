@@ -1,0 +1,7 @@
+read in all the data
+
+go through and find duplicates or mismatches
+
+start at the lowest pin and work way up
+flagging the nodes that are used
+    if we hit a flagged node, stop going up
