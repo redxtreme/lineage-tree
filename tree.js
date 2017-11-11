@@ -26,7 +26,7 @@ function handleText(allText) {
         this.name = name;
     };
     var nodes = [];
-
+    
     //break text up line by line
     var lines = allText.split('\n');
 
@@ -39,10 +39,10 @@ function handleText(allText) {
         //if line length is less than 2 skip it
         if (line.length < 2)
             continue;
-        
+
         //loop through every id in a line
         for (var i = 0; i < line.length; i++) {
-            
+
             var newNode = new Node();
 
             newNode.id = parseInt(line[i]);
@@ -55,30 +55,40 @@ function handleText(allText) {
             nodes.push(newNode);
         }
     }
+    
     constructTree(nodes);
 }
 
 function constructTree(nodes) {
-
     var nodeLinks = [];
-    nodeLinks.push({source: 0, target: 0})
+    var mappedNodes = [];
+    
+//    nodeLinks.push({
+//        source: 0,
+//        target: 0
+//    })
+//    mappedNodes.push([0].map(Object));
+//    print(mappedNodes);
+
     //loop through all of the nodes
-    for (var i=0; i < nodes.length; i++) {
+    for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
-        print(node);
+        
         nodeLinks.push({
             source: node.id,
             target: node.parent
         });
-        
+
+        //map the nodes value for the graph
+        mappedNodes.push(node.id);
     }
-    print(nodeLinks);
+    
     //example at https://bl.ocks.org/mbostock/3311124
     var graph = {
-        nodes: d3.range(nodeLinks.length).map(Object),
+        nodes: d3.range(600).map(Object),
         links: nodeLinks
     };
-print(graph.links);
+    
     var width = 960,
         height = 500;
 
@@ -90,7 +100,7 @@ print(graph.links);
         .nodes(graph.nodes)
         .links(graph.links)
         .size([width, height])
-        .charge(-200)
+        .charge(-12)
         .on("tick", tick)
         .start();
 
