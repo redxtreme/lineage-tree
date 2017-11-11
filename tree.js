@@ -1,5 +1,6 @@
-var nodeDetails = []; //holds the details for each individual node
+var nodeDetails = {}; //holds the details for each individual node
 
+console.log('herll');
 getLineData('lines2.txt');
 
 //reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
@@ -22,64 +23,68 @@ function getLineData(file) {
 
 //imports and formats the text file
 function handleText(allText) {
-    
     var data = [];
 
     //split text up line by line
     var lines = allText.split('\n');
 
+    var splitLines = [];
+    
     //split each line array up into individual ids
-    lines.map(function(line) { return line.split(' '); });
+    lines.forEach(function (line) {
+        splitLines.push(line.split(' '));
+    });
     
     //loop through every line and link the lineages
-    lines.forEach(function (line, i) {
-        
-        //if line length is less than 2 skip it
-        if (line.length < 2)
-            continue;
-        
-        //loop through every id in the line and link
-        line.forEach(function (id, i) {
-            var newNode = new DetailedNode();
-            
-            newNode.id = parseInt(line[i]);
+    splitLines.forEach(function (line, i) {
 
-            //if this is not the last node in a line
-            if (i < line.length - 1)
-                newNode.parent = parseInt(line[i + 1]);
+        if (line.length > 1) {
 
-            nodeDetails.push(newNode);
-        })
-    })
+            //loop through every id in the line and link
+            line.forEach(function (id, i) {
+                var newNode = new DetailedNode();
 
-    //loop through every person's line
-    for (var lineIndex in lines) {
+                newNode.id = parseInt(line[i]);
 
-        //isolate each id number
-        var line = lines[lineIndex].split(' ');
+                //if this is not the last node in a line
+                if (i < line.length - 1)
+                    newNode.parent = parseInt(line[i + 1]);
 
-        //if line length is less than 2 skip it
-        if (line.length < 2)
-            continue;
-
-        //for every id in the line
-        for (var i = 0; i < line.length; i++) {
-            var id = '';
-
-            //append all the children
-            for (var j = 0; j <= i; j++) {
-
-                //add . between each node
-                if (j !== 0)
-                    id += '.';
-
-                id += line[j];
-            }
-            data.push(new graphNode(id));
+                if (!nodeDetails.hasOwnProperty(id))
+                    nodeDetails[id] = newNode;
+            })
         }
-    }
-    print(data);
-    constructTree(data);
+    })
+    print(nodeDetails);
+    
+    //    //    //loop through every person's line to compile graph format
+    //    for (var lineIndex in lines) {
+    //
+    //        //isolate each id number
+    //        var line = lines[lineIndex].split(' ');
+    //
+    //        //if line length is less than 2 skip it
+    //        if (line.length < 2)
+    //            continue;
+    //
+    //        //for every id in the line
+    //        for (var i = 0; i < line.length; i++) {
+    //            var id = '';
+    //
+    //            //append all the children
+    //            for (var j = 0; j <= i; j++) {
+    //
+    //                //add . between each node
+    //                if (j !== 0)
+    //                    id += '.';
+    //
+    //                id += line[j];
+    //            }
+    //            data.push(new graphNode(id));
+    //        }
+    //    }
+    //    print(data);
+    //    constructTree(data);
 }
 
 function constructTree(data) {
@@ -177,14 +182,14 @@ function project(x, y) {
 }
 
 function DetailedNode(parent = 0, id = null, name = null) {
-        this.parent = parent;
-        this.id = id;
-        this.name = name;
-    };
+    this.parent = parent;
+    this.id = id;
+    this.name = name;
+};
 
 function graphNode(id = 0) {
-            this.id = id;
-        };
+    this.id = id;
+};
 
 function print(stuff) {
     console.log(stuff);
