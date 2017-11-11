@@ -43,7 +43,6 @@ function handleText(allText) {
 
         //loop through every id in a line
         for (var i = 0; i < line.length; i++) {
-
             var newNode = new Node();
 
             newNode.id = parseInt(line[i]);

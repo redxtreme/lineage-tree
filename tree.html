@@ -77,26 +77,29 @@ d3.csv("flare.csv", function(error, data) {
       .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); });
 });
 
-    function testrun() {
-        var stuff = [];
+    function lineGenerator(line) {
+        var data = [];
         function Node(id=0) {
             this.id = id;
         };
-        
-        var x = d3.range(3);
-        for (var i=0; i < x.length; i++) {
+   
+        //for every id in the line
+        for (var i=0; i < line.length; i++) {
             var id = '';
             
-            //form the id
+            //prepend all the children
             for(var j=0; j <= i; j++) {
+                
+                //add . between each node
                 if (j !== 0)
                     id += '.';
                 
-                id += x[j];
+                id += line[j];
             }
-            stuff.push(new Node(id));
+            data.push(new Node(id));
         }
-        console.log(stuff);
+        
+        return data;
     }
     
 function project(x, y) {
