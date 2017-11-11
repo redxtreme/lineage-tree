@@ -14,7 +14,7 @@ function getLineData(file) {
             if (rawFile.status === 200 || rawFile.status == 0) {
                 var allText = rawFile.responseText;
                 handleText(allText);
-                constructTree(constructGraphFormat(nodeDetails));
+                constructTree(constructGraphFormat());
             }
         }
     }
@@ -62,21 +62,63 @@ function constructNodeDetails(splitLines) {
     })
 }
 
-//formats the lineage so the graph can display it
-function constructGraphFormat(nodeDetails) {
-    var graphData = [];
+function printLineage(node) {
+    
+    if (node.parent === 0) {
+        var newNode = new GraphNode('0.' + node.id);
+        return [newNode];
+    }
+    else {
+        lineageData = printLineage(nodeDetails[node.parent]);
+        var lineage = lineageData[lineageData.length-1].id;
+        var formattedLineage = lineage + '.' + node.id;
+        var newNode = new GraphNode(formattedLineage);
+        lineageData.push(newNode);
+        return lineageData;
+    }
+}
 
+//formats the lineage so the graph can display it
+function constructGraphFormat() {
+    var graphData = [];
+    var keys = d3.keys(nodeDetails);
+    var node = nodeDetails[keys[keys.length-1]];
+    
+    
+    graphData = printLineage(node);
+    
     //add the root node
     graphData.push(new GraphNode('0'));
+    
+    print(graphData);
 
-    //initialize with the root
-    var lineageString = '0';
+//    for (i = keys.length - 1; i >= 0; i--) {
+//        var curKey = keys[i];
+//        var node = nodeDetails[curKey];
+//        //printLineage(node);
+//        print(node);
+//    }
+//    for (i = keys.length - 1; i >= 0; i--) {
+//        var curKey = keys[i];
+//        var node = nodeDetails[curKey];
+//        console.log(node);
+//    }
 
-    for (var node in nodeDetails) {
-        lineageString += '.' + node;
-        var newNode = new GraphNode(lineageString);
-        graphData.push(newNode);
-    }
+//    var node =nodeDetails[]
+//        if (node.hasOwnProperty('parent')) {
+//            //        lineageString += '.' + node;
+//            //        var newNode = new GraphNode(lineageString);
+//            //        graphData.push(newNode);
+//            print(node.parent);
+//        }
+    //    for (var node in nodeDetails) {
+    //        print(nodeDetails.filter(x => x.parent === node));
+    //        //find every child of this node and print it
+    //        
+    ////        lineageString += '.' + node;
+    ////        var newNode = new GraphNode(lineageString);
+    ////        graphData.push(newNode);
+    //    }
 
     print(graphData);
     return graphData;
