@@ -20,7 +20,7 @@ function getLineData(file) {
 
 //imports and formats the text file
 function handleText(allText) {
-    function Node(parent = null, id = null, name = null) {
+    function Node(parent = 0, id = null, name = null) {
         this.parent = parent;
         this.id = id;
         this.name = name;
@@ -37,14 +37,14 @@ function handleText(allText) {
         var line = lines[lineIndex].split(' ');
 
         //loop through every id in a line
-        for (var pIndex in line) {
+        for (var i=0; i < line.length; i++) {
             var newNode = new Node();
 
-            newNode.id = line[pIndex];
-
+            newNode.id = parseInt(line[i]);
+            
             //if this is not the last node in a line
-            if (pIndex !== line.length - 2) {
-                newNode.parent = line[pIndex + 1];
+            if (i < line.length - 1) {
+                newNode.parent = parseInt(line[i + 1]);
             }
 
             nodes.push(newNode);
