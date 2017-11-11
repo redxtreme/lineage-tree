@@ -29,12 +29,12 @@ function handleText(allText) {
     var lines = allText.split('\n');
 
     var splitLines = [];
-    
+
     //split each line array up into individual ids
     lines.forEach(function (line) {
         splitLines.push(line.split(' '));
     });
-    
+
     //loop through every line and link the lineages
     splitLines.forEach(function (line, i) {
 
@@ -56,35 +56,46 @@ function handleText(allText) {
         }
     })
     print(nodeDetails);
+    constructTree(constructGraphFormat(nodeDetails));
+}
+
+function constructGraphFormat(nodeDetails) {
     
-    //    //    //loop through every person's line to compile graph format
-    //    for (var lineIndex in lines) {
-    //
-    //        //isolate each id number
-    //        var line = lines[lineIndex].split(' ');
-    //
-    //        //if line length is less than 2 skip it
-    //        if (line.length < 2)
-    //            continue;
-    //
-    //        //for every id in the line
-    //        for (var i = 0; i < line.length; i++) {
-    //            var id = '';
-    //
-    //            //append all the children
-    //            for (var j = 0; j <= i; j++) {
-    //
-    //                //add . between each node
-    //                if (j !== 0)
-    //                    id += '.';
-    //
-    //                id += line[j];
-    //            }
-    //            data.push(new graphNode(id));
-    //        }
-    //    }
-    //    print(data);
-    //    constructTree(data);
+    var graphData = [];
+    
+    //add the root node
+    graphData.push(new GraphNode('0'));
+    
+    //initialize with the root
+    var lineageString = '0';
+    
+    for (var node in nodeDetails) {
+        lineageString += '.' + node;
+        var newNode = new GraphNode(lineageString);
+        graphData.push(newNode);
+    }
+    print(graphData);
+    return graphData;
+    
+//    //loop through every person's line to compile graph format
+//    for (var lineIndex in lines) {
+//
+//        //for every id in the line
+//        for (var i = 0; i < line.length; i++) {
+//            var id = '';
+//
+//            //append all the children
+//            for (var j = 0; j <= i; j++) {
+//
+//                //add . between each node
+//                if (j !== 0)
+//                    id += '.';
+//
+//                id += line[j];
+//            }
+//            data.push(new graphNode(id));
+//        }
+//    }
 }
 
 function constructTree(data) {
@@ -149,31 +160,31 @@ function constructTree(data) {
         });
 }
 
-function lineGenerator(line) {
-    var data = [];
-
-    function Node(id = 0) {
-        this.id = id;
-    };
-
-    //for every id in the line
-    for (var i = 0; i < line.length; i++) {
-        var id = '';
-
-        //prepend all the children
-        for (var j = 0; j <= i; j++) {
-
-            //add . between each node
-            if (j !== 0)
-                id += '.';
-
-            id += line[j];
-        }
-        data.push(new Node(id));
-    }
-
-    return data;
-}
+//function lineGenerator(line) {
+//    var data = [];
+//
+//    function Node(id = 0) {
+//        this.id = id;
+//    };
+//
+//    //for every id in the line
+//    for (var i = 0; i < line.length; i++) {
+//        var id = '';
+//
+//        //prepend all the children
+//        for (var j = 0; j <= i; j++) {
+//
+//            //add . between each node
+//            if (j !== 0)
+//                id += '.';
+//
+//            id += line[j];
+//        }
+//        data.push(new Node(id));
+//    }
+//
+//    return data;
+//}
 
 function project(x, y) {
     var angle = (x - 90) / 180 * Math.PI,
@@ -187,8 +198,8 @@ function DetailedNode(parent = 0, id = null, name = null) {
     this.name = name;
 };
 
-function graphNode(id = 0) {
-    this.id = id;
+function GraphNode(lineageString = 0) {
+    this.id = lineageString;
 };
 
 function print(stuff) {
