@@ -95,7 +95,6 @@ function constructGraphFormat() {
             if (!graphData.hasOwnProperty(data.id))
                 graphData[data.id] = data;
         });
-        //print(graphData);
     }
     
     //turn object into array
@@ -104,28 +103,6 @@ function constructGraphFormat() {
         toReturn.push(graphData[graphNodeKey]);
     }
     
-//    for (i = keys.length - 1; i >= 0; i--) {
-//        var curKey = keys[i];
-//        var node = nodeDetails[curKey];
-//        console.log(node);
-//    }
-
-//    var node =nodeDetails[]
-//        if (node.hasOwnProperty('parent')) {
-//            //        lineageString += '.' + node;
-//            //        var newNode = new GraphNode(lineageString);
-//            //        graphData.push(newNode);
-//            print(node.parent);
-//        }
-    //    for (var node in nodeDetails) {
-    //        print(nodeDetails.filter(x => x.parent === node));
-    //        //find every child of this node and print it
-    //        
-    ////        lineageString += '.' + node;
-    ////        var newNode = new GraphNode(lineageString);
-    ////        graphData.push(newNode);
-    //    }
-
     print(toReturn);
     return toReturn;
 }
@@ -142,7 +119,7 @@ function constructTree(data) {
         });
 
     var tree = d3.cluster()
-        .size([360, 390])
+        .size([360, 400])
         .separation(function (a, b) {
             return (a.parent == b.parent ? 1 : 2) / a.depth;
         });
@@ -185,7 +162,7 @@ function constructTree(data) {
             return d.x < 180 === !d.children ? "start" : "end";
         })
         .attr("transform", function (d) {
-            return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")";
+            return "rotate(" + (d.x < 180 ? d.x - 0 : d.x + 0) + ")";
         })
         .text(function (d) {
             return d.id.substring(d.id.lastIndexOf(".") + 1);
