@@ -7,21 +7,21 @@ svg {
 }
 
 .node text {
-    font: 12px sans-serif;
+    font: 10px sans-serif;
     fill: #F0AC73;
+    text-shadow: 0 1px 0 #000, 0 -1px 0 #000, 1px 0 0 #000, -1px 0 0 #000;
+
 }
 
 .node--internal circle {
-    fill: #CB4643;
+    fill: #CB4643; 
 }
 
-.node--internal text {
-    /*text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;*/
-}
+.node--internal text {}
 
 .link {
     fill: none;
-    stroke: #459090;
-    stroke-opacity: 0.4;
+    stroke: #065353;
+    stroke-opacity: 1;
     stroke-width: 1.5px;
 }
