@@ -7,7 +7,10 @@ function constructTree(data) {
         g = svg.append("g").attr("transform", "translate(40,0)");
 
     var tree = d3.tree()
-        .size([height-100, width-100]);
+        .size([height-100, width-100])
+        .separation(function(a, b) {
+            return (a.parent == b.parent ? 1 : 1);
+        });
 
     var stratify = d3.stratify()
         .parentId(function (d) {
