@@ -7,8 +7,8 @@ function constructTree(data) {
         g = svg.append("g").attr("transform", "translate(40,0)");
 
     var tree = d3.tree()
-        .size([height-100, width-100])
-        .separation(function(a, b) {
+        .size([height - 100, width - 100])
+        .separation(function (a, b) {
             return (a.parent == b.parent ? 1 : 1);
         });
 
@@ -45,7 +45,7 @@ function constructTree(data) {
         })
 
     node.append("circle")
-        .attr("r", 2.5);
+        .attr("r", 3);
 
     node.append("text")
         .attr("dy", 3)
@@ -55,7 +55,7 @@ function constructTree(data) {
         .style("text-anchor", function (d) {
             return d.children ? "start" : "start";
         })
-    .attr("transform", function (d) {
+        .attr("transform", function (d) {
             return "rotate(90)";
         })
         .text(function (d) {

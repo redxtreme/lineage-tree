@@ -1,0 +1,26 @@
+svg {
+    background: #222;
+}
+/* color scheme http://paletton.com/#uid=7010t0kpllIgAu4lspstBhtBXc6 */
+.node circle {
+    fill: #CB4643;
+}
+
+.node text {
+    font: 12px sans-serif;
+    fill: #F0AC73;
+    /*text-shadow: 0 1px 0 #000, 0 -1px 0 #000, 1px 0 0 #000, -1px 0 0 #000;*/
+}
+
+.node--internal circle {
+    fill: #CB4643; 
+}
+
+.node--internal text {}
+
+.link {
+    fill: none;
+    stroke: #065353;
+    stroke-opacity: 1;
+    stroke-width: 1.5px;
+}
