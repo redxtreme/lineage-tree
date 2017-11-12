@@ -7,7 +7,7 @@ function constructTree(data) {
         g = svg.append("g").attr("transform", "translate(40,0)");
 
     var tree = d3.tree()
-        .size([height-200, width-100]);
+        .size([height-100, width-100]);
 
     var stratify = d3.stratify()
         .parentId(function (d) {
@@ -16,7 +16,7 @@ function constructTree(data) {
 
     var root = stratify(data)
         .sort(function (a, b) {
-            return (a.height - b.height) || a.id.localeCompare(b.id);
+            return (b.height - a.height) || a.id.localeCompare(b.id);
         });
 
     var link = g.selectAll(".link")
@@ -47,7 +47,7 @@ function constructTree(data) {
     node.append("text")
         .attr("dy", 3)
         .attr("x", function (d) {
-            return d.children ? -8 : 8;
+            return d.children ? 8 : 8;
         })
         .style("text-anchor", function (d) {
             return d.children ? "start" : "start";
