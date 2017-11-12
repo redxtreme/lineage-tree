@@ -9,8 +9,7 @@ svg {
 .node text {
     font: 10px sans-serif;
     fill: #F0AC73;
-    text-shadow: 0 1px 0 #000, 0 -1px 0 #000, 1px 0 0 #000, -1px 0 0 #000;
-
+    /*text-shadow: 0 1px 0 #000, 0 -1px 0 #000, 1px 0 0 #000, -1px 0 0 #000;*/
 }
 
 .node--internal circle {
