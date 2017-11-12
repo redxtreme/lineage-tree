@@ -5,7 +5,7 @@ getLineData('./src/data/lines.txt');
 // reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
 // also here https://www.html5rocks.com/en/tutorials/file/dndfiles/
 
-// Gets the line data from the file
+// Gets the line data from the given file
 function getLineData(file) {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
@@ -36,10 +36,9 @@ function handleText(allText) {
     });
 
     constructNodeDetails(splitLines);
-    print(nodeDetails);
 }
 
-//loop through every line and link the lineages
+//loop through every line and store the lineages links
 function constructNodeDetails(splitLines) {
 
     splitLines.forEach(function (line, i) {
@@ -76,17 +75,26 @@ function constructNodeDetails(splitLines) {
     })
 }
 
+//gathers and formats the entire lineage for a line for graph usage
 function formatLineage(node) {
 
+    //if this is the oldest ancestor
     if (node.parent === 0) {
+        
+        //link it to 0 for now
         var newNode = new GraphNode('0.' + node.id);
         return [newNode];
     } else {
+        
+        //get the ancestor string up to this point
         lineageData = formatLineage(nodeDetails[node.parent]);
         var lineage = lineageData[lineageData.length - 1].id;
+        
+        //add the current id to the lineage
         var formattedLineage = lineage + '.' + node.id;
         var newNode = new GraphNode(formattedLineage);
         lineageData.push(newNode);
+        
         return lineageData;
     }
 }
@@ -95,9 +103,7 @@ function formatLineage(node) {
 function constructGraphFormat() {
     var graphData = {};
     var keys = d3.keys(nodeDetails);
-
-    //    graphData = printLineage(node);
-
+    
     //add the root node
     graphData['0'] = new GraphNode('0');
 
@@ -116,20 +122,17 @@ function constructGraphFormat() {
         toReturn.push(graphData[graphNodeKey]);
     }
 
-    //print(toReturn);
     return toReturn;
 }
 
+//Stores the details of a node
 function DetailedNode(parent = 0, id = null, name = null) {
     this.parent = parent;
     this.id = id;
     this.name = name;
 }
 
+//Stores the lineage in a graph format
 function GraphNode(lineageString = 0) {
     this.id = lineageString;
-}
-
-function print(stuff) {
-    console.log(stuff);
 }
