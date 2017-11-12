@@ -2,8 +2,8 @@ var nodeDetails = {}; //holds the details for each individual node
 
 getLineData('./src/data/lines.txt');
 
-// reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
-// also here https://www.html5rocks.com/en/tutorials/file/dndfiles/
+//reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
+//also here https://www.html5rocks.com/en/tutorials/file/dndfiles/
 
 // Gets the line data from the given file
 function getLineData(file) {
