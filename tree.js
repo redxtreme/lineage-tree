@@ -1,6 +1,6 @@
 var nodeDetails = {}; //holds the details for each individual node
 
-getLineData('lines2.txt');
+getLineData('lines.txt');
 
 // reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
 // also here https://www.html5rocks.com/en/tutorials/file/dndfiles/
@@ -14,7 +14,7 @@ function getLineData(file) {
             if (rawFile.status === 200 || rawFile.status == 0) {
                 var allText = rawFile.responseText;
                 handleText(allText);
-                constructTree(constructGraphFormat(nodeDetails));
+                constructTree(constructGraphFormat());
             }
         }
     }
@@ -62,24 +62,72 @@ function constructNodeDetails(splitLines) {
     })
 }
 
-//formats the lineage so the graph can display it
-function constructGraphFormat(nodeDetails) {
-    var graphData = [];
-
-    //add the root node
-    graphData.push(new GraphNode('0'));
-
-    //initialize with the root
-    var lineageString = '0';
-
-    for (var node in nodeDetails) {
-        lineageString += '.' + node;
-        var newNode = new GraphNode(lineageString);
-        graphData.push(newNode);
+function formatLineage(node) {
+    
+    if (node.parent === 0) {
+        var newNode = new GraphNode('0.' + node.id);
+        return [newNode];
     }
+    else {
+        lineageData = formatLineage(nodeDetails[node.parent]);
+        var lineage = lineageData[lineageData.length-1].id;
+        var formattedLineage = lineage + '.' + node.id;
+        var newNode = new GraphNode(formattedLineage);
+        lineageData.push(newNode);
+        return lineageData;
+    }
+}
 
-    print(graphData);
-    return graphData;
+//formats the lineage so the graph can display it
+function constructGraphFormat() {
+    var graphData = {};
+    var keys = d3.keys(nodeDetails);
+    
+//    graphData = printLineage(node);
+    
+    //add the root node
+    graphData['0'] = new GraphNode('0');
+    
+    for (i = keys.length - 1; i >= 0; i--) {
+        var curKey = keys[i];
+        var node = nodeDetails[curKey];
+        formatLineage(node).forEach(function(data) {
+            if (!graphData.hasOwnProperty(data.id))
+                graphData[data.id] = data;
+        });
+        //print(graphData);
+    }
+    
+    //turn object into array
+    var toReturn = [];
+    for (var graphNodeKey in graphData) {
+        toReturn.push(graphData[graphNodeKey]);
+    }
+    
+//    for (i = keys.length - 1; i >= 0; i--) {
+//        var curKey = keys[i];
+//        var node = nodeDetails[curKey];
+//        console.log(node);
+//    }
+
+//    var node =nodeDetails[]
+//        if (node.hasOwnProperty('parent')) {
+//            //        lineageString += '.' + node;
+//            //        var newNode = new GraphNode(lineageString);
+//            //        graphData.push(newNode);
+//            print(node.parent);
+//        }
+    //    for (var node in nodeDetails) {
+    //        print(nodeDetails.filter(x => x.parent === node));
+    //        //find every child of this node and print it
+    //        
+    ////        lineageString += '.' + node;
+    ////        var newNode = new GraphNode(lineageString);
+    ////        graphData.push(newNode);
+    //    }
+
+    print(toReturn);
+    return toReturn;
 }
 
 function constructTree(data) {
