@@ -50,7 +50,7 @@ function constructTree(data) {
             return d.children ? -8 : 8;
         })
         .style("text-anchor", function (d) {
-            return d.children ? "end" : "start";
+            return d.children ? "start" : "start";
         })
     .attr("transform", function (d) {
             return "rotate(90)";
