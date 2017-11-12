@@ -1,3 +1,5 @@
+//for reference https://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab
+
 function constructTree(data) {
     var svg = d3.select("svg"),
         width = +svg.attr("width"),
@@ -62,6 +64,6 @@ function constructTree(data) {
 
 function project(x, y) {
     var angle = (x - 90) / 180 * Math.PI,
-        radius = y+10;
+        radius = y + 10;
     return [radius * Math.cos(angle), radius * Math.sin(angle)];
 }
