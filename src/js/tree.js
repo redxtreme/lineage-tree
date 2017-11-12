@@ -64,6 +64,6 @@ function constructTree(data) {
 
 function project(x, y) {
     var angle = (x - 90) / 180 * Math.PI,
-        radius = y+10;
+        radius = y + 10;
     return [radius * Math.cos(angle), radius * Math.sin(angle)];
 }

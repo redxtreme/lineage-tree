@@ -53,18 +53,18 @@ function constructNodeDetails(splitLines) {
                 //if this is not the last node in a line
                 if (i < line.length - 1)
                     newNode.parent = parseInt(line[i + 1]);
-                
+
                 //if the node isn't in the details, add it
                 if (!nodeDetails.hasOwnProperty(id))
                     nodeDetails[id] = newNode;
                 else if (newNode.parent !== 0) {
                     var storedParent = nodeDetails[id].parent;
-                    
+
                     //if the parent already stored is 0, fix it
                     if (storedParent === 0)
                         nodeDetails[id] = newNode;
                     else {
-                        
+
                         //if the parents dont match, throw alert
                         if (storedParent !== newNode.parent)
                             alert(id + ' has conflicting parents: ' + newNode.parent + ', and ' + storedParent);
@@ -80,21 +80,21 @@ function formatLineage(node) {
 
     //if this is the oldest ancestor
     if (node.parent === 0) {
-        
+
         //link it to 0 for now
         var newNode = new GraphNode('0.' + node.id);
         return [newNode];
     } else {
-        
+
         //get the ancestor string up to this point
         lineageData = formatLineage(nodeDetails[node.parent]);
         var lineage = lineageData[lineageData.length - 1].id;
-        
+
         //add the current id to the lineage
         var formattedLineage = lineage + '.' + node.id;
         var newNode = new GraphNode(formattedLineage);
         lineageData.push(newNode);
-        
+
         return lineageData;
     }
 }
@@ -103,7 +103,7 @@ function formatLineage(node) {
 function constructGraphFormat() {
     var graphData = {};
     var keys = d3.keys(nodeDetails);
-    
+
     //add the root node
     graphData['0'] = new GraphNode('0');
 
