@@ -14,7 +14,9 @@ function getLineData(file) {
             if (rawFile.status === 200 || rawFile.status == 0) {
                 var allText = rawFile.responseText;
                 handleText(allText);
-                constructTree(constructGraphFormat());
+                var data = constructGraphFormat();
+                constructTree(data);
+                //constructCluster(data);
             }
         }
     }
