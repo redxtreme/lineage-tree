@@ -1,0 +1,21 @@
+body {
+    background: #000;
+}
+
+.appContainer {
+    display: table;
+    overflow: hidden;
+    background: #000;
+}
+
+.appContainer .appContainerHeader {
+    background: #AD2724;
+    color: #f5f5f5;
+    padding: 4px;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.appContainer .appContainerBody {
+    padding: 10px;
+}

@@ -5,8 +5,8 @@
  * @param data <jsonObject>: Graph formatted data.
  */
 function constructTree(data) {
-    var appContainer = createAppContainer('Lineage Tree');
-    var svg = d3.select('body').append('svg')
+    var appContainerBody = createAppContainer('Lineage Tree');
+    var svg = appContainerBody.append('svg')
         .attr('height', getAppHeight())
         .attr('width', getAppWidth());
     var width = +svg.attr("width"),
