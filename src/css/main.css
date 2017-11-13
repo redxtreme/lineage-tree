@@ -3,7 +3,7 @@ body {
 }
 
 .appContainer {
-    display: table;
+    display: inline-block;
     overflow: hidden;
     background: #000;
 }
