@@ -7,8 +7,8 @@
 function constructTree(data) {
     var appContainer = createAppContainer('Lineage Tree');
     var svg = d3.select('body').append('svg')
-        .attr('height', 800)
-        .attr('width', 1000);
+        .attr('height', getAppHeight())
+        .attr('width', getAppWidth());
     var width = +svg.attr("width"),
         height = +svg.attr("height"),
         g = svg.append("g").attr("transform", "translate(40,0)");
@@ -52,18 +52,18 @@ function constructTree(data) {
         })
 
     node.append("circle")
-        .attr("r", 3);
+        .attr("r", getTreeCircleSize());
 
     node.append("text")
         .attr("dy", 3)
         .attr("x", function (d) {
-            return d.children ? 8 : 8;
+            return d.children ? getTreeTextChildSpacing() : getTreeTextParentSpacing();
         })
         .style("text-anchor", function (d) {
-            return d.children ? "start" : "start";
+            return d.children ? getTreeTextChildAnchor() : getTreeTextParentAnchor();
         })
         .attr("transform", function (d) {
-            return "rotate(90)";
+            return "rotate(" + getTreeTextRotation() + ")";
         })
         .text(function (d) {
             return d.id.substring(d.id.lastIndexOf(".") + 1);
