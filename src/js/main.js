@@ -3,9 +3,12 @@
  * @param appName <String>: The name of the app it will contain
  */
 function createAppContainer(appName) {
-    appName = appName.replace(' ', '_').toLowerCase();
+    var formatedName = appName.replace(' ', '_').toLowerCase();
     var appContainer = d3.select('body').append('div')
-        .attr('id', 'appContainer_' + appName);
+        .attr('id', 'appContainer_' + formatedName);
+    
+    //set up container header
+    appContainer.append('div').attr('class', 'app_container_header');
 }
 
 function getAppHeight() {
