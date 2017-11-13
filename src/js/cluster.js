@@ -1,5 +1,9 @@
 //for reference https://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab
 
+/*
+ * Creates a cluster app with the provided data.
+ * @param data <jsonObject>: Graph formatted data.
+ */
 function constructCluster(data) {
     var svg = d3.select('body').append('svg')
         .attr('height', '900')

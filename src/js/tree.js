@@ -1,6 +1,11 @@
 //for reference https://bl.ocks.org/mbostock/4339184
 
+/*
+ * Creates a tree app with the provided data.
+ * @param data <jsonObject>: Graph formatted data.
+ */
 function constructTree(data) {
+    var appContainer = createAppContainer('Lineage Tree');
     var svg = d3.select('body').append('svg')
         .attr('height', 800)
         .attr('width', 1000);

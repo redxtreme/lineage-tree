@@ -5,7 +5,10 @@ getLineData('./src/data/lines.txt');
 //reference vid https://www.youtube.com/watch?v=ZZncFax8yNY
 //also here https://www.html5rocks.com/en/tutorials/file/dndfiles/
 
-// Gets the line data from the given file
+/*
+ * Gets the line data from the given file.
+ * @param <file>: The file to read that contains line data.
+ */
 function getLineData(file) {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, false);
@@ -23,7 +26,10 @@ function getLineData(file) {
     rawFile.send(null);
 }
 
-//imports and formats the text file
+/*
+ * Imports and formats the the provided text.
+ * @param allText <String>: The line file as text.
+ */
 function handleText(allText) {
     var data = [];
 
@@ -40,7 +46,10 @@ function handleText(allText) {
     constructNodeDetails(splitLines);
 }
 
-//loop through every line and store the lineages links
+/*
+ * Loop through every line and store the lineages links
+ * @param splitLines <Array>: 2D Array of all the lines
+ */
 function constructNodeDetails(splitLines) {
 
     splitLines.forEach(function (line, i) {
@@ -77,7 +86,11 @@ function constructNodeDetails(splitLines) {
     })
 }
 
-//gathers and formats the entire lineage for a line for graph usage
+/*
+ * Gathers and formats the entire lineage for a line for graph usage.
+ * @param node <nodeDetails>: A node to find the lineage of
+ * @returns <Array>: An array containing the lineage, formatted for a graph
+ */
 function formatLineage(node) {
 
     //if this is the oldest ancestor
@@ -85,6 +98,7 @@ function formatLineage(node) {
 
         //link it to 0 for now
         var newNode = new GraphNode('0.' + node.id);
+
         return [newNode];
     } else {
 
@@ -101,7 +115,10 @@ function formatLineage(node) {
     }
 }
 
-//formats the lineage so the graph can display it
+/*
+ * Formats the lineage so the graph can display it
+ * @returns <Array>: 
+ */
 function constructGraphFormat() {
     var graphData = {};
     var keys = d3.keys(nodeDetails);
@@ -109,10 +126,15 @@ function constructGraphFormat() {
     //add the root node
     graphData['0'] = new GraphNode('0');
 
+    //Loop through the nodes, starting at the youngest child
     for (i = keys.length - 1; i >= 0; i--) {
         var curKey = keys[i];
         var node = nodeDetails[curKey];
+
+        //For every anscestrial line in the nodes' lineage
         formatLineage(node).forEach(function (data) {
+
+            //if there is no lineage saved like the current one, add it
             if (!graphData.hasOwnProperty(data.id))
                 graphData[data.id] = data;
         });
@@ -120,6 +142,8 @@ function constructGraphFormat() {
 
     //turn object into array
     var toReturn = [];
+
+    //for every anscestiral line in the graph data
     for (var graphNodeKey in graphData) {
         toReturn.push(graphData[graphNodeKey]);
     }
@@ -127,14 +151,18 @@ function constructGraphFormat() {
     return toReturn;
 }
 
-//Stores the details of a node
+/*
+ * Constructor: Stores the details of a node.
+ */
 function DetailedNode(parent = 0, id = null, name = null) {
     this.parent = parent;
     this.id = id;
     this.name = name;
 }
 
-//Stores the lineage in a graph format
+/*
+ * Constructor: Stores the lineage in a graph format
+ */
 function GraphNode(lineageString = 0) {
     this.id = lineageString;
 }
