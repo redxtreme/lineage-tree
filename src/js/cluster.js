@@ -1,8 +1,10 @@
 //for reference https://bl.ocks.org/mbostock/4739610f6d96aaad2fb1e78a72b385ab
 
 function constructCluster(data) {
-    var svg = d3.select("svg"),
-        width = +svg.attr("width"),
+    var svg = d3.select('body').append('svg')
+        .attr('height', '900')
+        .attr('width', '900');
+    var width = +svg.attr("width"),
         height = +svg.attr("height"),
         g = svg.append("g").attr("transform", "translate(" + (width / 2 - 15) + "," + (height / 2 + 25) + ")");
 

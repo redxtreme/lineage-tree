@@ -1,13 +1,15 @@
 //for reference https://bl.ocks.org/mbostock/4339184
 
 function constructTree(data) {
-    var svg = d3.select("svg"),
-        width = +svg.attr("width"),
+    var svg = d3.select('body').append('svg')
+        .attr('height', 800)
+        .attr('width', 1000);
+    var width = +svg.attr("width"),
         height = +svg.attr("height"),
         g = svg.append("g").attr("transform", "translate(40,0)");
 
     var tree = d3.tree()
-        .size([height - 100, width - 100])
+        .size([height - 50, width - 80])
         .separation(function (a, b) {
             return (a.parent == b.parent ? 1 : 1);
         });
